@@ -1,7 +1,8 @@
 class UsersController < ApplicationController
-  
+ before_action :set_params, only: [:show, :edit, :update]
+  before_action :correct_user, only: [:edit, :update]
+ 
   def show # 追加
-   @user = User.find(params[:id])
   end
   
   def new
@@ -19,14 +20,14 @@ class UsersController < ApplicationController
   end
   
   def edit
+    @user = User.find(parame[:id])
   end
   
   def update
-    if @user.update(user_params)
-      # 保存に成功した場合はトップページへリダイレクト
-      redirect_to root_path , notice: '基本情報を編集しました'
+  　 if @user.update(user_params)
+      flash[:success] = "Updated your Plofile"
+      redirect_to @user
     else
-      # 保存に失敗した場合は編集画面へ戻す
       render 'edit'
     end
   end
@@ -34,7 +35,15 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:name, :email, :password,
+    params.require(:user).permit(:name, :profile, :area, :email, :password,
                                  :password_confirmation)
   end
-end
+  
+  def set_params
+    @user = User.find(params[:id])
+  end
+
+  def correct_user
+    @user = User.find(params[:id])
+    redirect_to root_path if @user != current_user
+  end
