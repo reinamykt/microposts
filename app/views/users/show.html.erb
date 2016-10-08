@@ -2,8 +2,8 @@
   <%= gravatar_for @user %>
   <%= @user.name %>
 </h1>
-<ul>
-  <li>プロフィール：<%= @user.profile %></li>
+<ul style="word-wrap: break-word; max-width: 300px;">
+  <li>プロフィール：<%= simple_format @user.profile %></li>
   <li>エリア：<%= @user.area %></li>
 </li>
 
